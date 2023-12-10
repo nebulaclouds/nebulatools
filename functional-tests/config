@@ -1,0 +1,9 @@
+[platform]
+url = development.uniondemo.run
+insecure = False
+
+[credentials]
+client_id=nebulapropeller
+scopes=all
+authorization_metadata_key=nebula-authorization
+auth_mode=basic
