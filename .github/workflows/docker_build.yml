@@ -1,11 +1,21 @@
 name: Docker Build Images
 
 on:
+  push:
+    branches:
+      - main
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
   workflow_call:
     outputs:
       cache_key:
         description: "Docker Cache key"
         value: ${{ jobs.build_docker.outputs.cache_key }}
+
 jobs:
   build_docker:
     name: Build Docker Image
