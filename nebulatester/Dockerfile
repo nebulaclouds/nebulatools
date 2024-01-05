@@ -33,7 +33,6 @@ RUN ${VENV}/bin/pip install wheel
 COPY ./requirements.txt /root
 RUN ${VENV}/bin/pip install -r /root/requirements.txt
 
-# Nebulactl installation
 RUN mkdir /opt/go
 # This will be removed once nebulactl respects command line settings
 COPY ./end2end/config.yaml /opt/go
@@ -42,10 +41,8 @@ RUN curl -s https://raw.githubusercontent.com/nebulaclouds/nebulactl/master/inst
 ENV PATH="/opt/go/bin:$PATH"
 WORKDIR /root
 
-# Copy the actual code
 COPY . /root
 
-# Copy over the helper script that the SDK relies on
 RUN cp ${VENV}/bin/nebulakit_venv /usr/local/bin/nebulakit_venv
 RUN chmod a+x /usr/local/bin/nebulakit_venv
 

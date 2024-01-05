@@ -9,7 +9,6 @@ from nebulakit.sdk.types import Types
 from nebulakit.sdk.workflow import workflow_class, Input
 
 
-# Uncacheable
 @inputs(wf_input=Types.Float, cache_disabled=Types.Boolean)
 @outputs(generated=Types.Float)
 @python_task
