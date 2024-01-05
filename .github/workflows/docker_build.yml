@@ -1,15 +1,15 @@
 name: Docker Build Images
 
 on:
-  push:
-    branches:
-      - main
-  pull_request_target:
-    types:
-      - opened
-      - edited
-      - synchronize
-      - reopened
+#  push:
+#    branches:
+#      - main
+#  pull_request_target:
+#    types:
+#      - opened
+#      - edited
+#      - synchronize
+#      - reopened
   workflow_call:
     outputs:
       cache_key:
@@ -33,10 +33,12 @@ jobs:
           key: /tmp/docker-images-${{ github.run_id }}
           restore-keys: |
             /tmp/docker-images-
-#      - name: Set cache key output
-#        id: cache_key
-#        run: |
-#          echo ::set-output name=cache_key::/tmp/docker-images-${{ github.run_id }}
+      - name: Set cache key output
+        id: cache_key
+        run: |
+          echo ::set-output name=cache_key::/tmp/docker-images-${{ github.run_id }}
+          
+
 #      - name: Prime docker cache
 #        run: (docker load -i /tmp/tmp/docker-images/snapshot-builder.tar || true) && (docker load -i /tmp/tmp/docker-images/snapshot.tar || true)
 #      - name: Build dockerfile
