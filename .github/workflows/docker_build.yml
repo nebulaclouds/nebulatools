@@ -1,3 +1,4 @@
+# gh workflow run run-tests.yml -f logLevel=warning -f tags=false -f environment=staging
 name: Docker Build Images
 
 #on:
