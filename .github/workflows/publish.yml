@@ -1,0 +1,72 @@
+name: Build & Push Docker Image
+
+on:
+  workflow_dispatch:
+    inputs:
+      dockerfile:
+        description: "Dockerfile name"
+        required: true
+        type: string
+      version:
+        description: "Version of image"
+        required: true
+        type: string
+      repository:
+        description: "Repository Name"
+        required: false
+        type: string
+      push:
+        description: "Push to registry"
+        required: false
+        type: boolean
+      before-build:
+        description: "Script to run before build"
+        required: false
+        type: string
+
+jobs:
+  push-github:
+    name: Push to Github Registry
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to GitHub Container Registry
+        if: ${{ inputs.push }}
+        uses: docker/login-action@v2
+        with:
+#          registry: ghcr.io
+#          registry: <your artifactory>.jfrog.io
+          registry: ${{ secrets.JFROG_REGISTRY }}
+          username: ${{ secrets.JFROG_USERNAME }}
+          password: ${{ secrets.JFROG_PASSWORD }}
+
+      - name: Prepare Image Tags
+        id: tags
+        uses: docker/metadata-action@v3
+        with:
+          images: jfrog.io/${{ inputs.repository }}
+          tags: |
+            type=raw,value=latest
+            type=raw,value=${{ inputs.version }}
+            type=sha,format=long,prefix=
+
+      - name: Before Build
+        run: |
+          ${{ inputs.before-build }}
+          cd swagger-codegen-cli
+
+      - name: Build and Push Image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ${{ inputs.dockerfile }}
+          platforms: linux/arm64,linux/amd64
+          push: true
+#          push: ${{ inputs.push }}
+          tags: ${{ steps.tags.outputs.tags }}
