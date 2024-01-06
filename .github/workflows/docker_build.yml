@@ -1,6 +1,6 @@
 name: Docker Build Images
 
-on:
+#on:
 #  push:
 #    branches:
 #      - main
@@ -10,18 +10,42 @@ on:
 #      - edited
 #      - synchronize
 #      - reopened
-
-  workflow_dispatch:
-    outputs:
-      cache_key:
-        description: "Docker Cache key"
-        value: ${{ jobs.build_docker.outputs.cache_key }}
-
 #  workflow_call:
 #    outputs:
 #      cache_key:
 #        description: "Docker Cache key"
 #        value: ${{ jobs.build_docker.outputs.cache_key }}
+#  workflow_dispatch:
+#    outputs:
+#      cache_key:
+#        description: "Docker Cache key"
+#        value: ${{ jobs.build_docker.outputs.cache_key }}
+
+
+on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+        - info
+        - warning
+        - debug
+      tags:
+        description: 'Test scenario tags'
+        required: false
+        type: boolean
+      environment:
+        description: 'Environment to run tests against'
+        type: environment
+        required: true
+    outputs:
+      cache_key:
+        description: "Docker Cache key"
+        value: ${{ jobs.build_docker.outputs.cache_key }}
 
 jobs:
   build_docker:
