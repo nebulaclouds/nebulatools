@@ -18,10 +18,16 @@ on:
         description: 'Environment to run tests against'
         type: environment
         required: false
+    outputs:
+      cache_key:
+        description: "Docker Cache key"
+        value: ${{ jobs.log-the-inputs.outputs.cache_key }}
 
 jobs:
   log-the-inputs:
     runs-on: ubuntu-latest
+    outputs:
+      cache_key: ${{ steps.cache_key.outputs.cache_key }}
     steps:
       - run: |
           echo "Log level: $LEVEL"
