@@ -10,11 +10,18 @@ on:
 #      - edited
 #      - synchronize
 #      - reopened
-  workflow_call:
+
+  workflow_dispatch:
     outputs:
       cache_key:
         description: "Docker Cache key"
         value: ${{ jobs.build_docker.outputs.cache_key }}
+
+#  workflow_call:
+#    outputs:
+#      cache_key:
+#        description: "Docker Cache key"
+#        value: ${{ jobs.build_docker.outputs.cache_key }}
 
 jobs:
   build_docker:
@@ -37,10 +44,10 @@ jobs:
         id: cache_key
         run: |
           echo ::set-output name=cache_key::/tmp/docker-images-${{ github.run_id }}
-          
+      - name: Prime docker cache
+        run: (docker load -i /tmp/tmp/docker-images/snapshot-builder.tar || true) && (docker load -i /tmp/tmp/docker-images/snapshot.tar || true)
 
-#      - name: Prime docker cache
-#        run: (docker load -i /tmp/tmp/docker-images/snapshot-builder.tar || true) && (docker load -i /tmp/tmp/docker-images/snapshot.tar || true)
+
 #      - name: Build dockerfile
 #        env:
 #          DOCKER_BUILDKIT: "1"
