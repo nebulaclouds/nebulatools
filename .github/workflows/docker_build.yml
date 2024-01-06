@@ -79,6 +79,6 @@ jobs:
           cd swagger-codegen-cli
           docker build -t nebulaclouds/${{ github.event.repository.name }}:builder --target builder --cache-from=nebulaclouds/${{ github.event.repository.name }}:builder .
           docker build -t nebulaclouds/${{ github.event.repository.name }}:latest --cache-from=nebulaclouds/${{ github.event.repository.name }}:builder .
-#
-#      - name: Tag and cache docker image
-#        run: mkdir -p /tmp/tmp/docker-images && docker save nebulaclouds/${{ github.event.repository.name }}:builder -o /tmp/tmp/docker-images/snapshot-builder.tar && docker save nebulaclouds/${{ github.event.repository.name }}:latest -o /tmp/tmp/docker-images/snapshot.tar
+
+      - name: Tag and cache docker image
+        run: cd .. && mkdir -p /tmp/tmp/docker-images && docker save nebulaclouds/${{ github.event.repository.name }}:builder -o /tmp/tmp/docker-images/snapshot-builder.tar && docker save nebulaclouds/${{ github.event.repository.name }}:latest -o /tmp/tmp/docker-images/snapshot.tar
