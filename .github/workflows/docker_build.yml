@@ -71,10 +71,12 @@ jobs:
           echo ::set-output name=cache_key::/tmp/docker-images-${{ github.run_id }}
       - name: Prime docker cache
         run: (docker load -i /tmp/tmp/docker-images/snapshot-builder.tar || true) && (docker load -i /tmp/tmp/docker-images/snapshot.tar || true)
+
       - name: Build dockerfile
         env:
           DOCKER_BUILDKIT: "1"
         run: |
+          cd swagger-codegen-cli
           docker build -t nebulaclouds/${{ github.event.repository.name }}:builder --target builder --cache-from=nebulaclouds/${{ github.event.repository.name }}:builder .
           docker build -t nebulaclouds/${{ github.event.repository.name }}:latest --cache-from=nebulaclouds/${{ github.event.repository.name }}:builder .
 #
