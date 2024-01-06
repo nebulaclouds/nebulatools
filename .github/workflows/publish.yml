@@ -50,7 +50,7 @@ jobs:
         id: tags
         uses: docker/metadata-action@v3
         with:
-          images: streamlineio.jfrog.io/streamline-io-docker/${{ inputs.repository }}
+          images: streamlineio.jfrog.io/nebula-docker/${{ inputs.repository }}
           tags: |
             type=raw,value=latest
             type=raw,value=${{ inputs.version }}
