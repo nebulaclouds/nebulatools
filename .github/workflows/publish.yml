@@ -57,9 +57,8 @@ jobs:
             type=sha,format=long,prefix=
 
       - name: Before Build
-        run: |
-          ${{ inputs.before-build }}
-          cd swagger-codegen-cli
+        run: pwd && cd swagger-codegen-cli/ && ls -la
+#          ${{ inputs.before-build }}
 
       - name: Build and Push Image
         uses: docker/build-push-action@v3
